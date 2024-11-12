@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@300;500&display=swap');
+
+:root {
+    --primary-text-color: #333;
+    --secondary-text-color: #666;
+    --accent-color: #FF5722; /* Bright orange for consistency */
+    --accent-color-dark: #E64A19;
+    --background-color: #121212; /* Darker background for better contrast */
+    --padding-inline-section: 20px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    color: var(--secondary-text-color);
+    line-height: 1.8rem;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Utility classes */
+.container {
+    max-width: 1180px;
+    margin: auto;
+    padding: var(--padding-inline-section);
+}
+.flex {
+    display: flex;
+    align-items: center;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.text-center {
+    text-align: center;
+}
+/* End Utility classes */
+
+header {
+    padding: 50px var(--padding-inline-section);
+    background-color: var(--background-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.header-left {
+    max-width: 50%;
+}
+
+.header-left h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.header-left p {
+    margin-bottom: 30px;
+    color: var(--secondary-text-color);
+}
+
+.primary-button-homepage {
+    background-color: var(--accent-color);
+    border-radius: 30px;
+    font-weight: 700;
+    color: white !important;
+    padding: 12px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.primary-button-homepage:hover {
+    background-color: var(--accent-color-dark);
+}
+
+.features-section {
+    padding: 80px var(--padding-inline-section);
+    background-color: var(--background-color);
+}
+
+.features-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.features-header h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: var(--primary-text-color);
+}
+
+.features-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.features-card {
+    background-color: #1E1E1E; /* Dark card background for better contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    max-width: 30%;
+    flex-grow: 1;
+}
+
+.features-card h3 {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+
+.features-card p {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+}
+
+.features-card:hover {
+    transform: translateY(-10px);
+}
+
+.big-features-section {
+    padding: 60px var(--padding-inline-section);
+}
+
+.big-features-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.feature-image img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.feature-image {
+    flex-basis: 45%;
+}
+
+.features-desc {
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cta-section {
+    background-color: var(--accent-color-dark);
+    padding: 60px var(--padding-inline-section);
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.cta-section p {
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+}
+
+.cta-section .primary-button-homepage {
+    background-color: white;
+    color: var(--accent-color-dark);
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cta-section .primary-button-homepage:hover {
+    background-color: var(--accent-color-dark);
+    color: white;
+}
