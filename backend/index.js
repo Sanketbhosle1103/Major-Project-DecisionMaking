@@ -47,6 +47,38 @@ app.use("/api/", authRouter);
 
 let chatHistory = [];
 
+app.post("/firstask", async (req, res) => {
+  try {
+    const { category, options } = req.body;
+
+    // Create a prompt for Gemini to generate dynamic questions
+    const questionPrompt = `
+            Category: ${category}
+            Options: ${options.join(", ")}
+            Please generate 5 basic questions to help the user make a decision and by answering those questions we can get good insights and get to a better decision among the options.
+        `;
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const response = await model.generateContent(questionPrompt);
+    const dynamicQuestions =
+      response.response.candidates[0].content.parts[0].text.split("\n");
+
+    chatHistory.push({
+      role: "User",
+      text: `Category: ${category}, Options: ${options.join(", ")}`,
+    });
+    chatHistory.push({
+      role: "Bot",
+      text: `Dynamic Questions: ${dynamicQuestions.join(", ")}`,
+    });
+
+    res.json({ dynamicQuestions, chatHistory });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while processing your request.");
+  }
+});
+
 app.post("/ask", async (req, res) => {
   try {
     const { category, options, answers } = req.body;

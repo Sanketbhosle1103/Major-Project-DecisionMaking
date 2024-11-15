@@ -1,50 +1,18 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-<<<<<<< HEAD
-import {
-    Container, Box, Typography, Button, TextField, Select, MenuItem, InputLabel,
-    FormControl, ThemeProvider, createTheme, CssBaseline
-} from '@mui/material';
-import './Decision.css'; // Import the CSS file
-
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-        background: {
-            default: '#121212',
-            paper: '#1E1E1E',
-        },
-        primary: {
-            main: '#FF5722', // Bright orange for better visibility
-        },
-        secondary: {
-            main: '#03DAC6',
-        },
-        text: {
-            primary: '#FFFFFF',
-            secondary: '#B0B0B0',
-        },
-    },
-    typography: {
-        fontFamily: 'Roboto, sans-serif',
-        h4: { fontWeight: 700 },
-        h6: { fontWeight: 600 },
-        body1: { fontWeight: 400 },
-    },
-});
-=======
-import './Decision.css';
->>>>>>> 5eb475e912addc8b4eda1dc1780c5227d93e62b7
+import React, { useState } from "react";
+import axios from "axios";
+import "./Decision.css";
 
 function Decision() {
-    const [category, setCategory] = useState('');
-    const [options, setOptions] = useState('');
+    const [category, setCategory] = useState("");
+    const [options, setOptions] = useState(["", ""]); // Two options by default
     const [answers, setAnswers] = useState([]);
     const [dynamicQuestions, setDynamicQuestions] = useState([]);
     const [dynamicAnswers, setDynamicAnswers] = useState([]);
-    const [decision, setDecision] = useState('');
+    const [decision, setDecision] = useState("");
 
-    const categories = ['Finance', 'Career'];
+    const [firstQuestions, setFirstQuestions] = useState([]);
+
+    const categories = ["Finance", "Career"];
 
     const fixedQuestions = {
         Finance: [
@@ -65,15 +33,21 @@ function Decision() {
 
     const handleCategoryChange = (e) => {
         setCategory(e.target.value);
-        setOptions('');
+        setOptions(["", ""]); // Reset to two empty options
         setAnswers([]);
         setDynamicQuestions([]);
         setDynamicAnswers([]);
-        setDecision('');
+        setDecision("");
     };
 
-    const handleOptionChange = (e) => {
-        setOptions(e.target.value);
+    const handleOptionChange = (e, index) => {
+        const updatedOptions = [...options];
+        updatedOptions[index] = e.target.value;
+        setOptions(updatedOptions);
+    };
+
+    const handleAddOption = () => {
+        setOptions([...options, ""]); // Add an empty string for a new option
     };
 
     const handleAnswerChange = (e, index) => {
@@ -90,132 +64,44 @@ function Decision() {
 
     const handleGetQuestions = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/ask', { category, options, answers });
+            const response = await axios.post("http://localhost:5000/ask", {
+                category,
+                options,
+                answers
+            });
             setDynamicQuestions(response.data.dynamicQuestions);
         } catch (error) {
-            console.error('Error fetching dynamic questions:', error);
+            console.error("Error fetching dynamic questions:", error);
+        }
+    };
+
+    const handleFirstQuestion = async () => {
+        try {
+            const response = await axios.post("http://localhost:5000/firstask", {
+                category,
+                options
+            });
+            setFirstQuestions(response.data.dynamicQuestions);
+        } catch (error) {
+            console.error("Error fetching dynamic questions:", error);
         }
     };
 
     const handleGetDecision = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/decision', { category, options, answers, dynamicAnswers });
+            const response = await axios.post("http://localhost:5000/decision", {
+                category,
+                options,
+                answers,
+                dynamicAnswers
+            });
             setDecision(response.data.decision);
         } catch (error) {
-            console.error('Error fetching decision:', error);
+            console.error("Error fetching decision:", error);
         }
     };
 
     return (
-<<<<<<< HEAD
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <Container maxWidth="sm" className="decision-container">
-                <Box textAlign="center">
-                    <Typography variant="h4" gutterBottom>
-                        Decision-Making Platform
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" paragraph>
-                        Choose a category and provide your input to receive tailored questions and a decision.
-                    </Typography>
-
-                    <FormControl fullWidth variant="outlined" margin="normal">
-                        <InputLabel>Select Category</InputLabel>
-                        <Select
-                            value={category}
-                            onChange={handleCategoryChange}
-                            label="Select Category"
-                        >
-                            <MenuItem value=""><em>Select...</em></MenuItem>
-                            {categories.map((cat) => (
-                                <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    {category && (
-                        <Box className="input-section">
-                            <Typography variant="h6" gutterBottom>
-                                Input Section
-                            </Typography>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                margin="normal"
-                                label="Enter Options"
-                                value={options}
-                                onChange={handleOptionChange}
-                                InputLabelProps={{ style: { color: '#FF5722' } }}
-                                InputProps={{ style: { color: '#FFFFFF', height: '56px' } }}
-                                className="custom-text-field"
-                            />
-                            {fixedQuestions[category].map((question, index) => (
-                                <TextField
-                                    key={index}
-                                    fullWidth
-                                    variant="outlined"
-                                    margin="normal"
-                                    label={question}
-                                    value={answers[index] || ''}
-                                    onChange={(e) => handleAnswerChange(e, index)}
-                                    InputLabelProps={{ style: { color: '#FF5722' } }}
-                                    InputProps={{ style: { color: '#FFFFFF', height: '56px' } }}
-                                    className="custom-text-field"
-                                />
-                            ))}
-                            <Button
-                                variant="contained"
-                                onClick={handleGetQuestions}
-                                className="get-questions-button"
-                            >
-                                Get More Questions
-                            </Button>
-                        </Box>
-                    )}
-
-                    {dynamicQuestions.length > 0 && (
-                        <Box className="additional-questions">
-                            <Typography variant="h6" gutterBottom>
-                                Additional Questions
-                            </Typography>
-                            {dynamicQuestions.map((question, index) => (
-                                <TextField
-                                    key={index}
-                                    fullWidth
-                                    variant="outlined"
-                                    margin="normal"
-                                    label={question}
-                                    value={dynamicAnswers[index] || ''}
-                                    onChange={(e) => handleDynamicAnswerChange(e, index)}
-                                    InputLabelProps={{ style: { color: '#FF5722' } }}
-                                    InputProps={{ style: { color: '#FFFFFF', height: '56px' } }}
-                                    className="custom-text-field"
-                                />
-                            ))}
-                            <Button
-                                variant="contained"
-                                onClick={handleGetDecision}
-                                className="get-decision-button"
-                            >
-                                Get Decision
-                            </Button>
-                        </Box>
-                    )}
-
-                    {decision && (
-                        <Box className="decision-section">
-                            <Typography variant="h5" gutterBottom>
-                                Your Decision
-                            </Typography>
-                            <Typography variant="body1">
-                                {decision}
-                            </Typography>
-                        </Box>
-                    )}
-                </Box>
-            </Container>
-        </ThemeProvider>
-=======
         <div className="container">
             <h1 className="header">Decision-Making Platform</h1>
 
@@ -229,7 +115,9 @@ function Decision() {
                 >
                     <option value="">Select...</option>
                     {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -237,23 +125,42 @@ function Decision() {
             {category && (
                 <>
                     <div className="form-group">
-                        <label htmlFor="options">Enter Options</label>
-                        <input
-                            id="options"
-                            type="text"
-                            value={options[0] || ''}
-                            onChange={handleOptionChange}
-                            className="text-input"
-                        />
+                        <label>Enter Options</label>
+                        {options.map((option, index) => (
+                            <div key={index} className="option-input">
+                                <input
+                                    id={`option-${index}`}
+                                    type="text"
+                                    value={option}
+                                    onChange={(e) => handleOptionChange(e, index)}
+                                    placeholder={`Option ${index + 1}`}
+                                    className="text-input"
+                                />
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={handleAddOption}
+                            className="button add-option-button"
+                        >
+                            Add Option
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleFirstQuestion}
+                            className="button add-option-button"
+                        >
+                            Proceed
+                        </button>
                     </div>
 
-                    {fixedQuestions[category].map((question, index) => (
+                    {firstQuestions.length>0 && firstQuestions.map((question, index) => (
                         <div className="form-group" key={index}>
                             <label htmlFor={`answer-${index}`}>{question}</label>
                             <input
                                 id={`answer-${index}`}
                                 type="text"
-                                value={answers[index] || ''}
+                                value={answers[index] || ""}
                                 onChange={(e) => handleAnswerChange(e, index)}
                                 className="text-input"
                             />
@@ -277,7 +184,7 @@ function Decision() {
                             <input
                                 id={`dynamic-answer-${index}`}
                                 type="text"
-                                value={dynamicAnswers[index] || ''}
+                                value={dynamicAnswers[index] || ""}
                                 onChange={(e) => handleDynamicAnswerChange(e, index)}
                                 className="text-input"
                             />
@@ -299,7 +206,6 @@ function Decision() {
                 </div>
             )}
         </div>
->>>>>>> 5eb475e912addc8b4eda1dc1780c5227d93e62b7
     );
 }
 
